@@ -7,14 +7,14 @@ Decision trees allow us to organize information in a hierarchical structure. In 
 Here, we will use binary decision trees to implement a program that will play a simple ["20 Questions"](https://en.wikipedia.org/wiki/Twenty_questions) style guessing game. The program will try to guess what animal the user is thinking of. It will ask the user yes-or-no questions to narrow down options until it arrives at a single answer.
 
 How does it know what to ask? The user will teach it! Every time the program gets an answer wrong, it will ask for feedback about what question it should have asked to distinguish the wrong anser from the right answer. It will then add this question to the binary decision tree.
-
+ 
 Here is an example session, with the user's responses indicated with ">":
 
     $ java AnimalGuess
     Think of an animal.
     I'll try to guess it.
     Is your animal a Mouse?
-    > no
+    > no 
     I got it wrong.
     Please help me to learn.
     What was your animal?
