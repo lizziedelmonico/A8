@@ -6,7 +6,7 @@
  */
 public class BinaryTree<E> {
     /** The value at this node */
-    private E data;
+    protected E data;
 
     /** Left child of this node */
     private BinaryTree<E> left;
