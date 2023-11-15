@@ -26,6 +26,22 @@ public class DecisionTree extends BinaryTree<String> {
       throw new UnsupportedOperationException("Tried to add non-DecisionTree as child");
     }
   }
+
+    /** accessor */
+  public DecisionTree getRight() {
+    return (DecisionTree)super.getRight();
+  }
+
+  /** manipulator */
+  public void setRight(BinaryTree<String> right) {
+    if (right instanceof DecisionTree) {
+      //this.left = left;
+      super.setLeft(right);
+    } else {
+      throw new UnsupportedOperationException("Tried to add non-DecisionTree as child");}
+    }
+
+
     public String followPath(DecisionTree node, String answers){
         for(int i = 0; i <= answers.length(); i++){
             if(answers.charAt(i) == ('Y')){
@@ -37,6 +53,7 @@ public class DecisionTree extends BinaryTree<String> {
                 return data;
             }
         }
+        System.out.println(data);
         return data;
         
     }
