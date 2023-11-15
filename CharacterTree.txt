@@ -1,0 +1,19 @@
+ Are they human-ish?
+Y Are they royalty?
+N Is it an animal?
+YY Are they a princess or queen?
+YN Finn
+NY Is it a common pet?
+NN Are they smiling?
+YYY Are they wearing bright colors?
+YYN Are they associated with the cold?
+NYY Jake
+NYN Tree Trunks
+NNY Are they a food?
+NNN Lumpy Space Princess
+YYYY Princess Bubblegum
+YYYN Marceline
+YYNY Ice King
+YYNN Flame King
+NNYY Peppermint Butler
+NNYN BMO
