@@ -1,5 +1,6 @@
 import java.util.Scanner;
-import java.io.File;
+import java.util.Queue;
+import java.util.LinkedList;
 
 /** 
  *  Class to represent a decision tree 
@@ -44,7 +45,11 @@ public class DecisionTree extends BinaryTree<String> {
       throw new UnsupportedOperationException("Tried to add non-DecisionTree as child");}
     }
 
-
+    /**
+     * Traces the path of the tree from the root
+     * @param answers   The string of yes/no answers (in the form of "Y" or "N")
+     * @return  The path following the specific string of answers the user provides
+     */
     public DecisionTree followPath(String answers){
         if(answers.length() == 0){
           return this;
@@ -60,32 +65,35 @@ public class DecisionTree extends BinaryTree<String> {
         }
     }
 
-    public void createTree(String input, String question){
-      String input1 = input.substring(0, input.length() - 1);
-      DecisionTree finalTree = followPath(input1);
-      if(input.substring(input.length() - 1).equalsIgnoreCase("Y")){
+    /**
+     * Creates tree from different combinations of user input
+     * @param answer  The user's answer to the question
+     * @param question  The question being asked to the user
+     */
+    public void createTree(String answer, String question){
+      String answer1 = answer.substring(0, answer.length() - 1);
+      DecisionTree finalTree = followPath(answer1);
+      if(answer.substring(answer.length() - 1).equalsIgnoreCase("Y")){
         DecisionTree newTree = new DecisionTree(question);
         finalTree.setLeft(newTree);
-      } else if(input.substring(input.length() - 1).equalsIgnoreCase("N")){
+      } else if(answer.substring(answer.length() - 1).equalsIgnoreCase("N")){
         DecisionTree newTree = new DecisionTree(question);
         finalTree.setRight(newTree);
       } else{
-        System.out.println(input);
+        System.out.println(answer);
         throw new IllegalArgumentException("You must only type in Y or N");
       }
     }
 
+    /**
+     * Reads a file and creates a tree using the information found
+     * @return  The root of the new tree
+     */
     public static DecisionTree fileTree(String filename){
-      Scanner file = null;
-      DecisionTree root = null;
-      try{
-          file = new Scanner(new File(filename));
-      } catch(Exception e){
-          System.err.println("Cannot locate file");
-          System.exit(-1);
-      }
+      Scanner file = new Scanner(System.in);
+
       String line = file.nextLine();
-      root = new DecisionTree(line.substring(1));
+      DecisionTree root = new DecisionTree(line.substring(1));
       while(file.hasNextLine()){
           line = file.nextLine();
           String[] words = line.split("\\s+");
@@ -94,6 +102,35 @@ public class DecisionTree extends BinaryTree<String> {
       file.close();
       return root;
   }
+
+  public static void writeTree(){
+    Queue<DecisionTree> output = new LinkedList<>();
+    Queue<DecisionTree> pathqueue = new LinkedList<>();
+    DecisionTree root = DecisionTree.fileTree(null);
+
+    output.add(root);
+
+    while(!output.isEmpty()){
+        DecisionTree current = output.poll();
+        pathqueue.poll();
+
+        if(current.getLeft() != null){
+            output.add(current.getLeft());
+            DecisionTree new_path = current.followPath("Y");
+            pathqueue.add(new_path);
+        }
+        if(current.getRight() != null){
+            output.add(current.getRight());
+            DecisionTree new_path = current.followPath("N");
+            pathqueue.add(new_path);
+        }
+        else{
+            continue;
+        }
+    }
+    System.out.println(pathqueue);
+  }
+
 }
 
 

@@ -1,11 +1,18 @@
-import java.io.File;
 import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.util.Queue;
+import java.util.LinkedList;
 
-
+/*
+*   Allows the user to play the guessing game 
+*/
 public class CharacterGuess {
-    
-    public static void runGame(DecisionTree tree) {
-        // Game
+
+    /**
+     * The main loop for the game 
+     * @param tree  The tree being used in the game 
+     */
+    public static void game(DecisionTree tree) {
         Scanner userInput = new Scanner(System.in);
         String playAgain = "";
 
@@ -46,9 +53,9 @@ public class CharacterGuess {
             } 
             else if (response.equals("no")) {
                 System.out.println("Uh oh.. I got it wrong");
-                System.out.println("Who was your character?");
+                System.out.println("Who was your character so I can remember them when you play again?");
                 String actual = userInput.nextLine();
-                System.out.println("Type a yes or no question that would distinguish between a " + actual + " and a " + tree.followPath(path).getData() + ".");
+                System.out.println("Could you give me a yes or no question that would help me choose between " + actual + " and " + tree.followPath(path).getData() + ".");
                 String actualAnimalQuestion = userInput.nextLine();
                 System.out.println("Would you answer yes to this question for " + actual);
                 String actualQA = userInput.nextLine();
@@ -73,10 +80,14 @@ public class CharacterGuess {
         userInput.close();
     }
 
-    /* FOR MAIN, IF NO ARGS, DO HARD CODE TREE */
 
-    public static void main(String[] args){
-        if(args.length == 0){
+    /**
+     * Runs the main program depending on whether or not you're reading the tree from the file (to use hard-coded tree, type any string in command line to start)
+     * @param args  The arguments used in the program
+     * @throws FileNotFoundException  In case the program cannot find the file the user choses
+     */
+    public static void main(String[] args) throws FileNotFoundException{
+        if(args.length > 0){
             DecisionTree tree = new DecisionTree("Human-ish?", null, null);
                 tree.setLeft(new DecisionTree("Royalty?"));
                 tree.setRight(new DecisionTree("Animal?"));
@@ -97,49 +108,15 @@ public class CharacterGuess {
                 tree.getRight().getRight().getLeft().setLeft(new DecisionTree("Peppermint Butler"));
                 tree.getRight().getRight().getLeft().setRight(new DecisionTree("BMO"));
 
-            runGame(tree);
+            game(tree);
 
         }   
         else{
-            String start = "Y";
             String filename = args.toString();
-        
-            while(start.equalsIgnoreCase("Y")){
+            game(DecisionTree.fileTree(filename));
             
-                DecisionTree currentTree = DecisionTree.fileTree(filename);
-                String treeRes = "";
-                String treeReses = "";
-                DecisionTree root = DecisionTree.fileTree(filename);
 
-                while(!currentTree.isLeaf()){
-                    boolean leafPass = false;
-                    while(!leafPass){
-                        try{
-                            Scanner question = new Scanner(System.in);
-                            System.out.println(currentTree.getData());
-                            treeRes = question.nextLine();
-                            treeReses += treeRes;
-                            currentTree = root.followPath(treeReses);
-                            leafPass = true;
-                        } catch(Exception e){
-                            System.out.println("please enter either Y or N");
-                            treeReses = treeReses.substring(0, treeReses.length() - treeRes.length());
-                        }
-                    }
-                }
-                System.out.println(currentTree.getData());
-                boolean whilePass = false;
-                while(!whilePass){
-                    Scanner question = new Scanner(System.in);
-                    System.out.println("Would you like to play again?");
-                    start = question.nextLine();
-                    if(!start.equalsIgnoreCase("Y") && !start.equalsIgnoreCase("N")){
-                        System.out.println("Please enter either Y or N");
-                    } else{
-                        whilePass = true;
-                    }
-                }
-            }
+
         }
     }
 }
